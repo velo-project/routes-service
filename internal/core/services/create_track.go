@@ -8,11 +8,11 @@ import (
 )
 
 type CreateTrackServiceInput struct {
-	UserID          *int              `json:"user_id"`
-	InitialLocation string            `json:"initial_location"`
-	FinalLocation   string            `json:"final_location"`
-	VisitedAt       *time.Time        `json:"visited_at"`
-	Track           []domain.Location `json:"track"`
+	UserID          *int              `json:"user_id" binding:"required"`
+	InitialLocation string            `json:"initial_location" binding:"required,min=3"`
+	FinalLocation   string            `json:"final_location" binding:"required,min=3"`
+	VisitedAt       *time.Time        `json:"visited_at" binding:"required"`
+	Track           []domain.Location `json:"track" binding:"required,min=1,dive"`
 }
 
 type CreateTrackServiceOutput struct {
