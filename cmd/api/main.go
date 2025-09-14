@@ -30,9 +30,9 @@ func main() {
 
 	r := gin.Default()
 
-	privateRoutes := r.Group("/api/v2")
+	pr := r.Group("/api/routes/v1")
 
-	privateRoutes.POST("/track", func(c *gin.Context) { http.CreateTrackHandler(c, db) })
+	pr.POST("/track", func(c *gin.Context) { http.CreateTrackHandler(c, db) })
 
 	r.Run()
 }
