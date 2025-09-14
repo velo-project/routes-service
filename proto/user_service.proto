@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "proto/user;user";
+
+service UserService {
+    rpc GetUserIdByEmail (GetUserIdByEmailRequest) returns (GetUserIdByEmailResponse);
+}
+
+message GetUserIdByEmailRequest {
+    string email = 1;
+}
+
+message GetUserIdByEmailResponse {
+    int32 id = 1;
+}
