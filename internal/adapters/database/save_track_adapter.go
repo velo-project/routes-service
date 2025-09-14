@@ -5,14 +5,15 @@ import (
 	"log"
 
 	"gitlab.com/velo-company/services/routes-service/internal/core/domain"
+	"gitlab.com/velo-company/services/routes-service/internal/core/ports"
 )
 
-type SaveTrackAdapter struct {
+type saveTrackAdapter struct {
 	DB *sql.DB
 }
 
-func NewSaveTrackAdapter(db *sql.DB) *SaveTrackAdapter {
-	return &SaveTrackAdapter{DB: db}
+func NewSaveTrackAdapter(db *sql.DB) ports.SaveTrackPort {
+	return &saveTrackAdapter{DB: db}
 }
 
 const (
@@ -20,7 +21,7 @@ const (
 	saveTrackLocationQuery = `INSERT INTO track_locations (track_id, lat, lng) VALUES ($1, $2, $3);`
 )
 
-func (a *SaveTrackAdapter) Execute(track *domain.Track) *int {
+func (a *saveTrackAdapter) Execute(track *domain.Track) *int {
 	tx, err := a.DB.Begin()
 	if err != nil {
 		log.Printf("ERROR: could not begin transaction: %v", err)

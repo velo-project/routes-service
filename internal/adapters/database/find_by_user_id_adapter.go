@@ -5,14 +5,15 @@ import (
 	"log"
 
 	"gitlab.com/velo-company/services/routes-service/internal/core/domain"
+	"gitlab.com/velo-company/services/routes-service/internal/core/ports"
 )
 
-type FindByUserIDAdapter struct {
+type findByUserIDAdapter struct {
 	DB *sql.DB
 }
 
-func NewFindByUserIDAdapter(db *sql.DB) *FindByUserIDAdapter {
-	return &FindByUserIDAdapter{DB: db}
+func NewFindByUserIDAdapter(db *sql.DB) ports.FindByUserIDPort {
+	return &findByUserIDAdapter{DB: db}
 }
 
 const (
@@ -20,7 +21,7 @@ const (
 	findTrackLocationsQuery = `SELECT lat, lng FROM track_locations WHERE track_id = $1;`
 )
 
-func (a *FindByUserIDAdapter) Execute(userId *int) []domain.Track {
+func (a *findByUserIDAdapter) Execute(userId *int) []domain.Track {
 	rows, err := a.DB.Query(findTracksByUserIDQuery, userId)
 	if err != nil {
 		log.Printf("ERROR: could not find tracks by user id: %v", err)
@@ -51,7 +52,7 @@ func (a *FindByUserIDAdapter) Execute(userId *int) []domain.Track {
 	return tracks
 }
 
-func (a *FindByUserIDAdapter) fetchLocationsForTrack(trackID int) ([]domain.Location, error) {
+func (a *findByUserIDAdapter) fetchLocationsForTrack(trackID int) ([]domain.Location, error) {
 	locationRows, err := a.DB.Query(findTrackLocationsQuery, trackID)
 	if err != nil {
 		return nil, err
