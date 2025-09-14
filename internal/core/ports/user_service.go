@@ -1,5 +1,5 @@
 package ports
 
 type GetUserIdByEmailPort interface {
-	Execute(email string) *int
+	Execute(email string) (*int, error)
 }

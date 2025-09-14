@@ -38,7 +38,15 @@ func NewCreateTrackService(savePort ports.SaveTrackPort, userService ports.GetUs
 }
 
 func (c *createTrackService) Execute(input CreateTrackServiceInput, email string) *CreateTrackServiceOutput {
-	userId := c.GetUserIdByEmailPort.Execute(email)
+	userId, err := c.GetUserIdByEmailPort.Execute(email)
+
+	if err != nil {
+		return &CreateTrackServiceOutput{
+			Message:    "Estamos enfrentando problemas no momento. Tente novamento mais tarde",
+			ID:         nil,
+			StatusCode: 502,
+		}
+	}
 
 	if userId == nil {
 		return &CreateTrackServiceOutput{
