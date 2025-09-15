@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/http"
 )
 
