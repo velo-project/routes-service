@@ -1,2 +1,2 @@
-DROP TABLE tbl_location;
-DROP TABLE tbl_track;
+DROP TABLE tbl_locations;
+DROP TABLE tbl_tracks;

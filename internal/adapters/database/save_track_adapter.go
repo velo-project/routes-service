@@ -17,8 +17,8 @@ func NewSaveTrackAdapter(db *sql.DB) ports.SaveTrackPort {
 }
 
 const (
-	saveTrackQuery         = `INSERT INTO tracks (user_id, initial_location, final_location, visited_at) VALUES ($1, $2, $3, $4) RETURNING id;`
-	saveTrackLocationQuery = `INSERT INTO track_locations (track_id, lat, lng) VALUES ($1, $2, $3);`
+	saveTrackQuery         = `INSERT INTO tbl_tracks (fk_user, tx_initial_location, tx_final_location, tx_visited_at) VALUES ($1, $2, $3, $4) RETURNING id_track;`
+	saveTrackLocationQuery = `INSERT INTO tbl_locations (fk_track, tx_lat, tx_lng) VALUES ($1, $2, $3);`
 )
 
 func (a *saveTrackAdapter) Execute(track *domain.Track) *int {
