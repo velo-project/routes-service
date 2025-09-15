@@ -31,7 +31,7 @@ func main() {
 
 	r := gin.Default()
 
-	pr := r.Group("/api/routes/v1")
+	pr := r.Group("/api/routes/v1", http.AuthMiddleware())
 
 	pr.POST("/track", func(c *gin.Context) { http.CreateTrackHandler(c, db) })
 
