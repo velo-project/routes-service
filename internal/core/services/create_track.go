@@ -1,17 +1,13 @@
 package services
 
 import (
-	"time"
-
 	"gitlab.com/velo-company/services/routes-service/internal/core/domain"
 	"gitlab.com/velo-company/services/routes-service/internal/core/ports"
 )
 
 type CreateTrackServiceInput struct {
-	UserID          *int              `json:"user_id" binding:"required"`
 	InitialLocation string            `json:"initial_location" binding:"required,min=3"`
 	FinalLocation   string            `json:"final_location" binding:"required,min=3"`
-	VisitedAt       *time.Time        `json:"visited_at" binding:"required"`
 	Track           []domain.Location `json:"track" binding:"required,min=1,dive"`
 }
 
