@@ -5,14 +5,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/database"
+	"gitlab.com/velo-company/services/routes-service/internal/adapters/grpc"
 	"gitlab.com/velo-company/services/routes-service/internal/core/services"
 )
 
 func CreateTrackHandler(c *gin.Context, DB *sql.DB) {
 	var savePort = database.NewSaveTrackAdapter(DB)
+	var getUserIdByEmailPort = grpc.NewGetUserIdByEmailAdapter(nil)
 	var useCase = services.NewCreateTrackService(
 		savePort,
-		nil)
+		getUserIdByEmailPort)
 
 	emailValue, exists := c.Get("email")
 	if !exists {
