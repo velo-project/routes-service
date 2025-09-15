@@ -20,3 +20,6 @@ go.work
 # Environment files
 .env*
 !.env.example
+
+# IDEA Files
+.idea/
