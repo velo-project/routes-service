@@ -10,11 +10,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 )
 
 var rsaPublicKey *rsa.PublicKey
 
 func init() {
+	if err := godotenv.Load(); err != nil {
+		log.Print("WARN: No .env file, using default system variables")
+	}
 	publicKeyPath := os.Getenv("RSA_PUBLIC_KEY")
 	if publicKeyPath == "" {
 		log.Fatal("FATAL: RSA_PUBLIC_KEY environment variable not set.")
