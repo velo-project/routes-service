@@ -34,6 +34,7 @@ func main() {
 	pr := r.Group("/api/routes/v1", http.AuthMiddleware())
 
 	pr.POST("/track", func(c *gin.Context) { http.CreateTrackHandler(c, db) })
+	pr.GET("/track", func(c *gin.Context) { http.FindRoutesByUserIdHandler(c, db) })
 
 	r.Run()
 }
