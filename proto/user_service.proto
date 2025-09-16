@@ -5,7 +5,6 @@ package user;
 option go_package = "proto/user;user";
 
 service UserService {
-    rpc GetUserIdByEmail (GetUserIdByEmailRequest) returns (GetUserIdByEmailResponse);
     rpc UserExistsById (UserExistsByIdRequest) returns (UserExistsByIdResponse);
 }
 
@@ -15,12 +14,4 @@ message UserExistsByIdRequest {
 
 message UserExistsByIdResponse {
   bool exists = 1;
-}
-
-message GetUserIdByEmailRequest {
-    string email = 1;
-}
-
-message GetUserIdByEmailResponse {
-    int32 id = 1;
 }

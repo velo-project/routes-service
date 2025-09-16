@@ -18,23 +18,23 @@ type CreateTrackServiceOutput struct {
 }
 
 type CreateTrackService interface {
-	Execute(input CreateTrackServiceInput, email string) *CreateTrackServiceOutput
+	Execute(input CreateTrackServiceInput, userId int) *CreateTrackServiceOutput
 }
 
 type createTrackService struct {
-	SavePort             ports.SaveTrackPort
-	GetUserIdByEmailPort ports.GetUserIdByEmailPort
+	SavePort           ports.SaveTrackPort
+	UserExistsByIdPort ports.UserExistsByIdPort
 }
 
-func NewCreateTrackService(savePort ports.SaveTrackPort, userService ports.GetUserIdByEmailPort) CreateTrackService {
+func NewCreateTrackService(savePort ports.SaveTrackPort, userExistsByIdPort ports.UserExistsByIdPort) CreateTrackService {
 	return &createTrackService{
-		SavePort:             savePort,
-		GetUserIdByEmailPort: userService,
+		SavePort:           savePort,
+		UserExistsByIdPort: userExistsByIdPort,
 	}
 }
 
-func (c *createTrackService) Execute(input CreateTrackServiceInput, email string) *CreateTrackServiceOutput {
-	userId, err := c.GetUserIdByEmailPort.Execute(email)
+func (c *createTrackService) Execute(input CreateTrackServiceInput, userId int) *CreateTrackServiceOutput {
+	exists, err := c.UserExistsByIdPort.Execute(userId)
 
 	if err != nil {
 		return &CreateTrackServiceOutput{
@@ -44,7 +44,7 @@ func (c *createTrackService) Execute(input CreateTrackServiceInput, email string
 		}
 	}
 
-	if userId == nil {
+	if exists == false {
 		return &CreateTrackServiceOutput{
 			Message:    "Este usuário não existe",
 			ID:         nil,
@@ -52,7 +52,7 @@ func (c *createTrackService) Execute(input CreateTrackServiceInput, email string
 		}
 	}
 
-	track := domain.NewTrack(nil, userId, input.InitialLocation, input.FinalLocation, nil, input.Track)
+	track := domain.NewTrack(nil, &userId, input.InitialLocation, input.FinalLocation, nil, input.Track)
 	track.ID = c.SavePort.Execute(track)
 
 	return &CreateTrackServiceOutput{

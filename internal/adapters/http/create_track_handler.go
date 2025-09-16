@@ -2,6 +2,7 @@ package http
 
 import (
 	"database/sql"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/database"
@@ -11,26 +12,20 @@ import (
 
 func CreateTrackHandler(c *gin.Context, DB *sql.DB) {
 	var savePort = database.NewSaveTrackAdapter(DB)
-	var getUserIdByEmailPort = grpc.NewGetUserIdByEmailAdapter(nil)
+	var userExistsByIdAdapter = grpc.NewUserExistsByIdAdapter(nil)
 	var useCase = services.NewCreateTrackService(
 		savePort,
-		getUserIdByEmailPort)
+		userExistsByIdAdapter)
 
-	emailValue, exists := c.Get("email")
+	value, exists := c.Get("userId")
 	if !exists {
-		c.JSON(401, gin.H{
-			"message":     "Invalid token",
-			"status_code": 401,
-		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "User not found in context"})
 		return
 	}
 
-	email, ok := emailValue.(string)
+	userId, ok := value.(int)
 	if !ok {
-		c.JSON(500, gin.H{
-			"message":     "Invalid token",
-			"status_code": 401,
-		})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "UserId invalid type"})
 		return
 	}
 
@@ -44,7 +39,7 @@ func CreateTrackHandler(c *gin.Context, DB *sql.DB) {
 		return
 	}
 
-	result := useCase.Execute(input, email)
+	result := useCase.Execute(input, userId)
 
 	c.JSON(result.StatusCode, result)
 }
