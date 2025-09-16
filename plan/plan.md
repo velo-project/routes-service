@@ -11,8 +11,7 @@ This document outlines the development plan for the Routes Service.
 
 - **Track Management (CRUD):**
   - [x] Create Track (already implemented)
-  - [ ] Read Track by ID
-  - [ ] Read Tracks by User ID
+  - [x] Read Tracks by User ID
   - [ ] Delete Track
 
 - **Testing:**
