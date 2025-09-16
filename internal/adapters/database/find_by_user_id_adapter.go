@@ -17,8 +17,8 @@ func NewFindByUserIDAdapter(db *sql.DB) ports.FindByUserIDPort {
 }
 
 const (
-	findTracksByUserIDQuery = `SELECT id, initial_location, final_location, visited_at FROM tracks WHERE user_id = $1;`
-	findTrackLocationsQuery = `SELECT lat, lng FROM track_locations WHERE track_id = $1;`
+	findTracksByUserIDQuery = `SELECT id_track, tx_initial_location, tx_final_location, tx_visited_at FROM tbl_tracks WHERE fk_user = $1;`
+	findTrackLocationsQuery = `SELECT tx_lat, tx_lng FROM tbl_locations WHERE track_id = $1;`
 )
 
 func (a *findByUserIDAdapter) Execute(userId *int) []domain.Track {
