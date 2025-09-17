@@ -35,6 +35,7 @@ func main() {
 
 	pr.POST("/track", func(c *gin.Context) { http.CreateTrackHandler(c, db) })
 	pr.GET("/track", func(c *gin.Context) { http.FindRoutesByUserIdHandler(c, db) })
+	pr.DELETE("/track/:id", func(c *gin.Context) { http.DeleteTrackHandler(c, db) })
 
 	r.Run()
 }

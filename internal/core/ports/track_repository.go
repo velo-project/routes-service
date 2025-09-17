@@ -9,3 +9,7 @@ type SaveTrackPort interface {
 type FindByUserIDPort interface {
 	Execute(userId *int) []domain.Track
 }
+
+type DeleteTrackPort interface {
+	Execute(trackID *int) error
+}
