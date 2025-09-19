@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"log"
+	"time"
 
 	"gitlab.com/velo-company/services/routes-service/internal/core/ports"
 	"gitlab.com/velo-company/services/routes-service/proto/user"
@@ -20,7 +21,10 @@ func NewUserExistsByIdAdapter(connection *grpc.ClientConn) ports.UserExistsByIdP
 }
 
 func (u userExistsByIdAdapter) Execute(userId int) (bool, error) {
-	res, err := u.client.UserExistsById(context.Background(), &user.UserExistsByIdRequest{
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	res, err := u.client.UserExistsById(ctx, &user.UserExistsByIdRequest{
 		Id: int32(userId),
 	})
 
