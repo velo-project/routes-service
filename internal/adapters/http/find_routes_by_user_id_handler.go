@@ -8,10 +8,11 @@ import (
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/database"
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/grpc"
 	"gitlab.com/velo-company/services/routes-service/internal/core/services"
+	ggrpc "google.golang.org/grpc"
 )
 
-func FindRoutesByUserIdHandler(c *gin.Context, DB *sql.DB) {
-	userExistsByIdPort := grpc.NewUserExistsByIdAdapter(nil)
+func FindRoutesByUserIdHandler(c *gin.Context, DB *sql.DB, grpcConn *ggrpc.ClientConn) {
+	userExistsByIdPort := grpc.NewUserExistsByIdAdapter(grpcConn)
 	findByUserIdPort := database.NewFindByUserIDAdapter(DB)
 	service := services.NewFindRoutesByUserId(
 		findByUserIdPort, userExistsByIdPort)

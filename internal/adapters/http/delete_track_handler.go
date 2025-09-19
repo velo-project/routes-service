@@ -9,10 +9,11 @@ import (
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/database"
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/grpc"
 	"gitlab.com/velo-company/services/routes-service/internal/core/services"
+	ggrpc "google.golang.org/grpc"
 )
 
-func DeleteTrackHandler(c *gin.Context, DB *sql.DB) {
-	userExistsByIdPort := grpc.NewUserExistsByIdAdapter(nil)
+func DeleteTrackHandler(c *gin.Context, DB *sql.DB, grpcConn *ggrpc.ClientConn) {
+	userExistsByIdPort := grpc.NewUserExistsByIdAdapter(grpcConn)
 	deleteTrackPort := database.NewDeleteTrackAdapter(DB)
 	service := services.NewDeleteTrack(deleteTrackPort, userExistsByIdPort)
 

@@ -9,6 +9,8 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/http"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
@@ -29,13 +31,20 @@ func main() {
 		panic(err)
 	}
 
+	grpcStr := os.Getenv("USER_SERVICE_GRPC_ADDRESS")
+	grpcConn, err := grpc.NewClient(grpcStr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("Não conseguiu conectar: %v", err)
+	}
+	defer grpcConn.Close()
+
 	r := gin.Default()
 
 	pr := r.Group("/api/routes/v1", http.AuthMiddleware())
 
-	pr.POST("/track", func(c *gin.Context) { http.CreateTrackHandler(c, db) })
-	pr.GET("/track", func(c *gin.Context) { http.FindRoutesByUserIdHandler(c, db) })
-	pr.DELETE("/track/:id", func(c *gin.Context) { http.DeleteTrackHandler(c, db) })
+	pr.POST("/track", func(c *gin.Context) { http.CreateTrackHandler(c, db, grpcConn) })
+	pr.GET("/track", func(c *gin.Context) { http.FindRoutesByUserIdHandler(c, db, grpcConn) })
+	pr.DELETE("/track/:id", func(c *gin.Context) { http.DeleteTrackHandler(c, db, grpcConn) })
 
 	r.Run()
 }

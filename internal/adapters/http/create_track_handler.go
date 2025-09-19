@@ -8,11 +8,12 @@ import (
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/database"
 	"gitlab.com/velo-company/services/routes-service/internal/adapters/grpc"
 	"gitlab.com/velo-company/services/routes-service/internal/core/services"
+	ggrpc "google.golang.org/grpc"
 )
 
-func CreateTrackHandler(c *gin.Context, DB *sql.DB) {
+func CreateTrackHandler(c *gin.Context, DB *sql.DB, grpcConn *ggrpc.ClientConn) {
 	var savePort = database.NewSaveTrackAdapter(DB)
-	var userExistsByIdAdapter = grpc.NewUserExistsByIdAdapter(nil)
+	var userExistsByIdAdapter = grpc.NewUserExistsByIdAdapter(grpcConn)
 	var useCase = services.NewCreateTrackService(
 		savePort,
 		userExistsByIdAdapter)
