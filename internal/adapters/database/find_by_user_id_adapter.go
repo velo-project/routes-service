@@ -18,11 +18,11 @@ func NewFindByUserIDAdapter(db *sql.DB) ports.FindByUserIDPort {
 
 const (
 	findTracksByUserIDQuery = `SELECT id_track, tx_initial_location, tx_final_location, tx_visited_at FROM tbl_tracks WHERE fk_user = $1;`
-	findTrackLocationsQuery = `SELECT tx_lat, tx_lng FROM tbl_locations WHERE track_id = $1;`
+	findTrackLocationsQuery = `SELECT tx_lat, tx_lng FROM tbl_locations WHERE fk_track = $1;`
 )
 
 func (a *findByUserIDAdapter) Execute(userId *int) []domain.Track {
-	rows, err := a.DB.Query(findTracksByUserIDQuery, userId)
+	rows, err := a.DB.Query(findTracksByUserIDQuery, *userId)
 	if err != nil {
 		log.Printf("ERROR: could not find tracks by user id: %v", err)
 		return nil
