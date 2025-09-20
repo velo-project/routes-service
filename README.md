@@ -78,6 +78,37 @@ The following API endpoints are available:
 - `GET /tracks`: Finds all routes for a given user.
 - `DELETE /tracks/:trackId`: Deletes a track.
 
+## Development
+
+### Creating Migrations
+
+To create a new migration, you can use the following command:
+
+```sh
+migrate create -ext sql -dir db/migrations -seq create_my_migration
+```
+
+This will create a new migration file in the `db/migrations` folder.
+
+### Running Migrations
+
+To run the migrations, you can use the following command:
+
+```sh
+migrate -path db/migrations -database "postgres://user:password@host:port/dbname?sslmode=disable" up
+```
+
+Make sure to replace the connection string with your own.
+
+
+### Generating Protobuf
+
+To generate the `.pb.go` file from the `.proto` file, you can use the following command:
+
+```sh
+protoc --go_out=. --go-grpc_out=. proto/user_service.proto
+```
+
 ## Dependencies
 
 The project uses the following dependencies:
