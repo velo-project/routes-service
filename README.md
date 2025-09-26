@@ -32,7 +32,8 @@ To get started with this project, you'll need to have Go installed on your machi
 
 4. Run the database migrations:
    ```sh
-   make migrate-up
+   # Assuming makefile exists or using a migration tool
+   migrate -path db/migrations -database "postgres://user:password@host:port/dbname?sslmode=disable" up
    ```
 5. Run the server:
    ```sh
