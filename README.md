@@ -16,7 +16,7 @@ To get started with this project, you'll need to have Go installed on your machi
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/theMyntt/velo-routes-service.git
+   git clone https://github.com/velo-project/routes-service
    ```
 2. Install the dependencies:
    ```sh
