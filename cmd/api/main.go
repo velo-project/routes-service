@@ -46,5 +46,10 @@ func main() {
 	pr.GET("/track", func(c *gin.Context) { http.FindRoutesByUserIdHandler(c, db, grpcConn) })
 	pr.DELETE("/track/:id", func(c *gin.Context) { http.DeleteTrackHandler(c, db, grpcConn) })
 
-	r.Run()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	r.Run(":" + port)
 }
