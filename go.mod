@@ -9,7 +9,10 @@ require (
 	google.golang.org/protobuf v1.36.9
 )
 
-require github.com/lib/pq v1.10.9 // indirect
+require (
+	github.com/gin-contrib/cors v1.7.6 // indirect
+	github.com/lib/pq v1.10.9 // indirect
+)
 
 require (
 	github.com/bytedance/gopkg v0.1.3 // indirect

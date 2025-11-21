@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -39,6 +40,8 @@ func main() {
 	defer grpcConn.Close()
 
 	r := gin.Default()
+
+	r.Use(cors.Default())
 
 	pr := r.Group("/api/routes/v1", http.AuthMiddleware())
 
